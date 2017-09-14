@@ -1,0 +1,19 @@
+[Unit]
+Description=Nginx container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStart=/usr/bin/docker run \
+        -p 0.0.0.0:80:80 \
+        -p 8080:8080 \
+        --net proxy-net -h nginx \
+        --rm --name %n nginx-proxy
+
+[Install]
+WantedBy=multi-user.target
+

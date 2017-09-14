@@ -1,0 +1,2 @@
+Configuration scripts for running peerflix-server behind nginx dockerized.
+Launching docker services with systemd

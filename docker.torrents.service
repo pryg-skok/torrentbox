@@ -1,0 +1,20 @@
+[Unit]
+Description=Torrents Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStart=/usr/bin/docker run --rm \
+        -p 6881:6881 -p 6881:6881/udp \
+        -v /data/torrents.json:/home/app/.config/peerflix-server/torrents.json \
+        -v /data:/tmp/torrent-stream \
+        --net proxy-net -h torrents \
+        --name %n peerflix-server
+
+[Install]
+WantedBy=multi-user.target
+
